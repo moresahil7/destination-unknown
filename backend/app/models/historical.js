@@ -17,12 +17,6 @@ const Historical = db.define(
     answer_given: {
       type: Sequelize.STRING,
     },
-    correct_answers: {
-      type: Sequelize.INTEGER,
-    },
-    incorrect_answers: {
-      type: Sequelize.INTEGER,
-    },
     is_correct: {
       type: Sequelize.BOOLEAN,
     },

@@ -60,7 +60,7 @@ const signin = async (req, res) => {
       res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
       return res.status(201).send(user);
     } else {
-      return res.status(404).send("No User found!");
+      return res.status(404).send({ msg: "No User found!" });
     }
   } catch (error) {
     console.log(error);
