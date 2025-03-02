@@ -25,9 +25,10 @@ const createUser = async (data) => {
 
 const signup = async (req, res) => {
   console.log(req.body, " req.body");
-  const { username } = req.body;
+  const { username, password } = req.body;
   const data = {
     username,
+    password: await bcrypt.hash(password, 10),
     id: uuidv4(),
   };
   const result = await createUser(data);
@@ -38,27 +39,31 @@ const signup = async (req, res) => {
 
   // Set cookie with JWT
   res.cookie("jwt", result.token, {
-    maxAge: 24 * 60 * 60 * 1000,
+    maxAge: 60 * 60 * 1000,
     httpOnly: true,
   });
 
-  return res.status(201).json(result.user);
+  return res.status(201).json({ user: result.user, token: result.token });
 };
 
 const signin = async (req, res) => {
   try {
-    const { username } = req.body;
+    const { username, password } = req.body;
     const user = await User.findOne({
       where: {
         username,
       },
     });
-    if (user) {
+    const isValidUser = await bcrypt.compare(password, user.password);
+    if (!isValidUser) {
+      return res.status(404).send({ msg: "Wrong Password!" });
+    }
+    if (isValidUser) {
       let token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-        expiresIn: 1 * 24 * 60 * 60 * 1000,
+        expiresIn: 60 * 60 * 1000,
       });
-      res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
-      return res.status(201).send(user);
+      res.cookie("jwt", token, { maxAge: 60 * 60 * 1000, httpOnly: true });
+      return res.status(201).send({ user, token });
     } else {
       return res.status(404).send({ msg: "No User found!" });
     }

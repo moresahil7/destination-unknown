@@ -117,6 +117,7 @@ const createInviteLink = async (req, res) => {
   const FRONTEND_URL = process.env.FRONTEND_URL;
   const data = {
     username: inviteeUsername,
+    password: await bcrypt.hash(uuidv4(), 10),
     id: uuidv4(),
   };
 

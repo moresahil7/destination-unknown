@@ -13,6 +13,10 @@ const User = db.define(
       type: Sequelize.STRING,
       allowNull: false,
     },
+    password: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
   },
   { timestamps: true }
 );

@@ -30,9 +30,6 @@ services:
       - POSTGRES_DB=bullet_db
     volumes:
       - newps_data:/var/lib/postgresql/data
-      
-
-  
 
 volumes:
   newps_data: {}
