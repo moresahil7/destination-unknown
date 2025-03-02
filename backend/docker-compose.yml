@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+  du_backend:
+    container_name: du_backend
+    image: globetrotter1:0.0.3
+    build:
+      context: .
+    ports:
+      - "3001:3001"
+    environment:
+      - EXTERNAL_PORT=3001
+      - PGDATABASE=bullet_db
+      - PGUSER=moresahil7
+      - PGPASSWORD=123456
+      - PGHOST=du_db
+      - JWT_SECRET=fortunerlegender
+      - FRONTEND_URL=https://abc.com
+    # command: ["node", "seedDatabase.js"]
+    depends_on:
+      - du_db
+  du_db:
+    container_name: du_db
+    image: "postgres:16"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=moresahil7
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=bullet_db
+    volumes:
+      - newps_data:/var/lib/postgresql/data
+      
+
+  
+
+volumes:
+  newps_data: {}
