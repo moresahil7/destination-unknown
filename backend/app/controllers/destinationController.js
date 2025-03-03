@@ -161,7 +161,7 @@ const loginInvitee = async (req, res) => {
     httpOnly: true,
     maxAge: 1 * 24 * 60 * 60,
   });
-  return res.status(200).json({ id: decoded.id });
+  return res.status(200).json({ id: decoded.id, token });
 };
 
 const getInviterScore = async (req, res) => {
